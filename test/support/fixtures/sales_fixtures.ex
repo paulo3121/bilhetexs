@@ -18,4 +18,19 @@ defmodule Bilhetexs.SalesFixtures do
 
     order
   end
+
+  @doc """
+  Generate a order_item.
+  """
+  def order_item_fixture(attrs \\ %{}) do
+    {:ok, order_item} =
+      attrs
+      |> Enum.into(%{
+        price_at_purchase: 120.5,
+        quantity: 42
+      })
+      |> Bilhetexs.Sales.create_order_item()
+
+    order_item
+  end
 end
