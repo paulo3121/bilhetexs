@@ -36,4 +36,21 @@ defmodule Bilhetexs.EventsFixtures do
 
     event
   end
+
+  @doc """
+  Generate a ticket_type.
+  """
+  def ticket_type_fixture(attrs \\ %{}) do
+    {:ok, ticket_type} =
+      attrs
+      |> Enum.into(%{
+        name: "some name",
+        price: 120.5,
+        sold_quantity: 42,
+        total_quantity: 42
+      })
+      |> Bilhetexs.Events.create_ticket_type()
+
+    ticket_type
+  end
 end

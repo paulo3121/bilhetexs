@@ -120,4 +120,64 @@ defmodule Bilhetexs.EventsTest do
       assert %Ecto.Changeset{} = Events.change_event(event)
     end
   end
+
+  describe "ticket_types" do
+    alias Bilhetexs.Events.TicketType
+
+    import Bilhetexs.EventsFixtures
+
+    @invalid_attrs %{name: nil, price: nil, total_quantity: nil, sold_quantity: nil}
+
+    test "list_ticket_types/0 returns all ticket_types" do
+      ticket_type = ticket_type_fixture()
+      assert Events.list_ticket_types() == [ticket_type]
+    end
+
+    test "get_ticket_type!/1 returns the ticket_type with given id" do
+      ticket_type = ticket_type_fixture()
+      assert Events.get_ticket_type!(ticket_type.id) == ticket_type
+    end
+
+    test "create_ticket_type/1 with valid data creates a ticket_type" do
+      valid_attrs = %{name: "some name", price: 120.5, total_quantity: 42, sold_quantity: 42}
+
+      assert {:ok, %TicketType{} = ticket_type} = Events.create_ticket_type(valid_attrs)
+      assert ticket_type.name == "some name"
+      assert ticket_type.price == 120.5
+      assert ticket_type.total_quantity == 42
+      assert ticket_type.sold_quantity == 42
+    end
+
+    test "create_ticket_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Events.create_ticket_type(@invalid_attrs)
+    end
+
+    test "update_ticket_type/2 with valid data updates the ticket_type" do
+      ticket_type = ticket_type_fixture()
+      update_attrs = %{name: "some updated name", price: 456.7, total_quantity: 43, sold_quantity: 43}
+
+      assert {:ok, %TicketType{} = ticket_type} = Events.update_ticket_type(ticket_type, update_attrs)
+      assert ticket_type.name == "some updated name"
+      assert ticket_type.price == 456.7
+      assert ticket_type.total_quantity == 43
+      assert ticket_type.sold_quantity == 43
+    end
+
+    test "update_ticket_type/2 with invalid data returns error changeset" do
+      ticket_type = ticket_type_fixture()
+      assert {:error, %Ecto.Changeset{}} = Events.update_ticket_type(ticket_type, @invalid_attrs)
+      assert ticket_type == Events.get_ticket_type!(ticket_type.id)
+    end
+
+    test "delete_ticket_type/1 deletes the ticket_type" do
+      ticket_type = ticket_type_fixture()
+      assert {:ok, %TicketType{}} = Events.delete_ticket_type(ticket_type)
+      assert_raise Ecto.NoResultsError, fn -> Events.get_ticket_type!(ticket_type.id) end
+    end
+
+    test "change_ticket_type/1 returns a ticket_type changeset" do
+      ticket_type = ticket_type_fixture()
+      assert %Ecto.Changeset{} = Events.change_ticket_type(ticket_type)
+    end
+  end
 end
